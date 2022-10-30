@@ -52,7 +52,7 @@ def list_url_products(url):
 
 def continue_pars():
     list_product = []
-    wb = load_workbook(filename='C:\\Users\\User\\Desktop\\All\\Activity\\Python\\Задачи\\ru1358651821imqu\\Таблица товаров.xlsx')
+    wb = load_workbook(filename='')
     sheet_ranges = wb['Товары']
     for product in range(2, sheet_ranges.max_row+1):
         list_product.append(sheet_ranges[f'A{product}'].value)
@@ -76,7 +76,7 @@ def product_information(list_url, strings, point_pars):
             soup = BeautifulSoup(response, 'lxml')
 
             name_product = soup.find('div', class_='product-title').text
-            name_file_screenshot = "C:\\Users\\User\\Desktop\\All\\Activity\\Python\\Задачи\\ru1358651821imqu\\products\\" + name_product + ".png"
+            name_file_screenshot = "" + name_product + ".png"
 
             if name_product in point_pars:
                 print('Такой товар уже есть')
@@ -84,14 +84,14 @@ def product_information(list_url, strings, point_pars):
             else:
                 full_screenshot(driver, name_file_screenshot)
 
-                file = load_workbook('C:\\Users\\User\\Desktop\\All\\Activity\\Python\\Задачи\\ru1358651821imqu\\Таблица товаров.xlsx')
+                file = load_workbook('')
                 work = file['Товары']
 
                 work[f'A{strings}'] = name_product
                 work[f'B{strings}'] = url
                 work[f'C{strings}'] = name_product + '.png'
 
-                file.save('C:\\Users\\User\\Desktop\\All\\Activity\\Python\\Задачи\\ru1358651821imqu\\Таблица товаров.xlsx')
+                file.save('')
 
         finally:
             driver.close()
