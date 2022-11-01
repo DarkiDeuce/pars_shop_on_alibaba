@@ -18,24 +18,33 @@ strings = 1
 
 domen = 'https://ru1358651821imqu.trustpass.alibaba.com/'
 
+def title_screen(url):
+    name_screenshot = ''
+    try:
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--start-maximized')
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.get(url=url)
+        time.sleep(2)
+
+        ele = driver.find_element("xpath", '/html/body')
+        total_height = ele.size["height"] # + 2000
+
+        driver.set_window_size(1920, total_height)
+        time.sleep(2)
+        driver.save_screenshot(name_screenshot)
+    finally:
+        driver.close()
+        driver.quit()
+
 def full_screenshot(driver, name_screenshot):
-
-        # chrome_options = Options()
-        # chrome_options.add_argument('--headless')
-        # chrome_options.add_argument('--start-maximized')
-        # driver = webdriver.Chrome(options=chrome_options)
-        # driver.get(url=url)
-        # time.sleep(2)
-
-        #driver.execute_script("return document.scrollingElement.scrollHeight;") Получение элемента с самой длинной высотой - Справка
-
     ele = driver.find_element("xpath", '/html/body')
     total_height = ele.size["height"] # + 2000
 
     driver.set_window_size(1920, total_height)
     time.sleep(2)
     driver.save_screenshot(name_screenshot)
-
 
 def list_url_products(url):
     link_products = []
@@ -76,7 +85,7 @@ def product_information(list_url, strings, point_pars):
             soup = BeautifulSoup(response, 'lxml')
 
             name_product = soup.find('div', class_='product-title').text
-            name_file_screenshot = "" + name_product + ".png"
+            name_file_screenshot = ""
 
             if name_product in point_pars:
                 print('Такой товар уже есть')
@@ -98,10 +107,10 @@ def product_information(list_url, strings, point_pars):
             driver.quit()
 
 def main():
+    title_screen(domen)
     list_url = list_url_products(domen)
     point_pars = continue_pars()
     product_information(list_url, strings, point_pars)
 
 if __name__ == '__main__':
     main()
-
